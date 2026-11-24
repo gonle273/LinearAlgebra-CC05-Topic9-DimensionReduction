@@ -52,15 +52,35 @@ def run_experiment_c3():
     print(f" LDA Space (2-D)   : {acc_lda * 100:.2f}%")
     print("=" * 50)
 
-    # 6. Save Plot
-    save_fig_base = os.path.join(PROJECT_ROOT, "outputs", "figures", "fig_c3_pca_vs_lda")
-    class_names = {0: "Digit 0", 1: "Digit 1", 2: "Digit 2"}
-    plot_side_by_side_2d(
-        X_test_pca, X_test_lda, y_test, class_names,
-        title_pca=f"PCA 2D Projection (Acc: {acc_pca*100:.1f}%)",
-        title_lda=f"LDA 2D Projection (Acc: {acc_lda*100:.1f}%)",
-        save_path=save_fig_base
-    )
+    # 6. Save Numerical Results to outputs/tables/ (CSV and LaTeX format)
+    table_csv_path = os.path.join(PROJECT_ROOT, "outputs", "tables", "c3_results.csv")
+    table_tex_path = os.path.join(PROJECT_ROOT, "outputs", "tables", "c3_results.tex")
+    
+    # Save CSV
+    with open(table_csv_path, "w", encoding="utf-8") as f:
+        f.write("Representation,Dimensions,Accuracy\n")
+        f.write(f"Raw Features,{X.shape[1]},{acc_raw:.4f}\n")
+        f.write(f"PCA Projection,2,{acc_pca:.4f}\n")
+        f.write(f"LDA Projection,2,{acc_lda:.4f}\n")
+
+    # Save LaTeX Table for Friend E
+    with open(table_tex_path, "w", encoding="utf-8") as f:
+        f.write("\\begin{table}[htbp]\n")
+        f.write("\\centering\n")
+        f.write("\\caption{Classification Accuracy of Nearest-Mean Classifier on Digits (0, 1, 2)}\n")
+        f.write("\\label{tab:c3_results}\n")
+        f.write("\\begin{tabular}{lcc}\n")
+        f.write("\\hline\n")
+        f.write("\\textbf{Representation Space} & \\textbf{Dimension} & \\textbf{Test Accuracy (\\%)} \\\\\n")
+        f.write("\\hline\n")
+        f.write(f"Original Raw Features & {X.shape[1]} & {acc_raw * 100:.2f}\\% \\\\\n")
+        f.write(f"PCA Subspace (Unsupervised) & 2 & {acc_pca * 100:.2f}\\% \\\\\n")
+        f.write(f"LDA Subspace (Supervised) & 2 & \\textbf{{{acc_lda * 100:.2f}\\%}} \\\\\n")
+        f.write("\\hline\n")
+        f.write("\\end{tabular}\n")
+        f.write("\\end{table}\n")
+
+    print(f"[OUTPUT] Tables generated:\n  -> {table_csv_path}\n  -> {table_tex_path}")
 
 
 if __name__ == "__main__":
