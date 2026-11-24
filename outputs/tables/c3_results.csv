@@ -1,0 +1,4 @@
+Representation,Dimensions,Accuracy
+Raw Features,64,0.9537
+PCA Projection,2,0.9352
+LDA Projection,2,1.0000
