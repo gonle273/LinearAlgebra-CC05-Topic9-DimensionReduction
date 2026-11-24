@@ -1,0 +1,1 @@
+Thư mục dành cho Bạn Lợi quản lý source code báo cáo LaTeX (.tex, .bib).
