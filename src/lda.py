@@ -19,7 +19,7 @@ class MyLDA:
     """
     def __init__(self, n_components=2):
         self.n_components = n_components
-        self.scalings_ = None
+        self.scalings_ = None # store optimal discriminant directions (eigenvectors)
 
     def fit(self, X, y):
         """
@@ -40,8 +40,8 @@ class MyLDA:
         S_B = np.zeros((D, D))
 
         for c in classes:
-            X_c = X[y == c]
-            N_c = X_c.shape[0]
+            X_c = X[y == c] # data points in class c
+            N_c = X_c.shape[0] # number of samples in class c
             mean_c = np.mean(X_c, axis=0)
 
             # Within-class scatter matrix: S_W = sum_c sum_{x in c} (x - mu_c)(x - mu_c)^T

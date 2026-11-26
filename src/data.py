@@ -3,7 +3,7 @@ Data loading and preprocessing utilities.
 """
 
 import numpy as np
-from sklearn.datasets import load_digits
+from sklearn.datasets import load_digits # for loading the digits dataset
 
 
 def load_digit_classes(classes=(0, 1, 2)):
