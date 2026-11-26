@@ -18,7 +18,7 @@ class MyPCA:
     def __init__(self, n_components=2):
         self.n_components = n_components
         self.mean_ = None
-        self.components_ = None
+        self.components_ = None # store principal directions (eigenvectors)
         self.singular_values_ = None
         self.explained_variance_ratio_ = None
 
@@ -51,17 +51,7 @@ class MyPCA:
         return self
 
     def transform(self, X):
-        """
-        Apply dimensionality reduction on X.
-        
-        Parameters:
-        -----------
-        X : np.ndarray of shape (N, D)
-        
-        Returns:
-        --------
-        X_proj : np.ndarray of shape (N, n_components)
-        """
+        """  Apply dimensionality reduction on X. """
         X_centered = X - self.mean_
         return np.dot(X_centered, self.components_.T)
 
