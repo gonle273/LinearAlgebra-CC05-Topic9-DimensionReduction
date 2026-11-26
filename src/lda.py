@@ -32,9 +32,9 @@ class MyLDA:
         y : np.ndarray of shape (N,)
             Target class labels.
         """
-        classes = np.unique(y)
-        D = X.shape[1]
-        overall_mean = np.mean(X, axis=0)
+        classes = np.unique(y) # unique class labels
+        D = X.shape[1] # number of features
+        overall_mean = np.mean(X, axis=0) # matrix mean across all samples
 
         S_W = np.zeros((D, D))
         S_B = np.zeros((D, D))
@@ -42,7 +42,7 @@ class MyLDA:
         for c in classes:
             X_c = X[y == c] # data points in class c
             N_c = X_c.shape[0] # number of samples in class c
-            mean_c = np.mean(X_c, axis=0)
+            mean_c = np.mean(X_c, axis=0) 
 
             # Within-class scatter matrix: S_W = sum_c sum_{x in c} (x - mu_c)(x - mu_c)^T
             diff_within = X_c - mean_c
@@ -58,7 +58,7 @@ class MyLDA:
         S_W_reg = S_W + epsilon * np.eye(D)
 
         # Solve generalized eigenvalue problem: S_W^(-1) * S_B * w = lambda * w
-        A = np.linalg.solve(S_W_reg, S_B)
+        A = np.linalg.solve(S_W_reg, S_B) # compute S_W^(-1) * S_B
         eigenvalues, eigenvectors = np.linalg.eig(A)
 
         # Eigenvalues can have negligible imaginary artifacts due to numerical round-off
@@ -66,8 +66,8 @@ class MyLDA:
         eigenvectors = np.real(eigenvectors)
 
         # Sort eigenvectors in descending order of their eigenvalues
-        sort_idx = np.argsort(eigenvalues)[::-1]
-        self.scalings_ = eigenvectors[:, sort_idx[:self.n_components]]
+        sort_idx = np.argsort(eigenvalues)[::-1] # sort indices for descending order
+        self.scalings_ = eigenvectors[:, sort_idx[:self.n_components]] # take all the row, but only the first n_components columns (eigenvectors)
 
         return self
 
